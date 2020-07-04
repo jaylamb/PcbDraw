@@ -17,6 +17,9 @@ from wand.image import Image
 import pcbnew
 from lxml import etree
 
+GLOBAL_DATA_DIR = '/usr/share/pcbdraw'
+STYLES_SUBDIR = 'styles'
+
 default_style = {
     "copper": "#417e5a",
     "board": "#4ca06c",
@@ -593,7 +596,26 @@ def svg_to_png(infile, outfile, dpi=300):
         with open(outfile, "wb") as out:
             out.write(png_image)
 
+def find_data_file(name, ext, subdir):
+    if os.path.isfile(name):
+        return name
+    # Not a file here, needs extension?
+    if name[-5:] != '.json':
+        name += '.json'
+        if os.path.isfile(name):
+            return name
+    # With the sources?
+    local_name = os.path.join(os.path.dirname(__file__), subdir, name)
+    if os.path.isfile(local_name):
+        return local_name
+    # System level?
+    global_name = os.path.join(GLOBAL_DATA_DIR, subdir, name)
+    if os.path.isfile(global_name):
+        return global_name
+    raise RuntimeError("Missing style " + name)
+
 def load_style(style_file):
+    style_file = find_data_file(style_file, '.json', STYLES_SUBDIR)
     try:
         with open(style_file, "r") as f:
             style = json.load(f)
