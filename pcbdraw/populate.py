@@ -17,6 +17,9 @@ import os
 import subprocess
 from copy import deepcopy
 
+GLOBAL_DATA_DIR = '/usr/share/pcbdraw'
+TEMPLATES_SUBDIR = 'templates'
+
 
 class PcbDrawInlineLexer(mistune.InlineLexer):
     def __init__(self, renderer, rules=None, **kwargs):
@@ -220,7 +223,8 @@ def relativize_header_paths(header, to):
         if key == 'libs' and header[key] in ["default", "kicad-default", "eagle-default"]:
             continue
         x = os.path.join(to, header[key])
-        header[key] = os.path.normpath(x)
+        if os.path.isfile(x):
+            header[key] = os.path.normpath(x)
     if "params" in header:
         x = header["params"]
         newlist = []
@@ -269,6 +273,25 @@ def validate_args(args):
     if args["params"] is None:
         args["params"] = []
 
+def find_data_file(name, ext, subdir):
+    if os.path.isfile(name):
+        return name
+    # Not a file here, needs extension?
+    ln = len(ext)
+    if name[-ln:] != ext:
+        name += ext
+        if os.path.isfile(name):
+            return name
+    # With the sources?
+    local_name = os.path.join(os.path.dirname(__file__), subdir, name)
+    if os.path.isfile(local_name):
+        return local_name
+    # System level?
+    global_name = os.path.join(GLOBAL_DATA_DIR, subdir, name)
+    if os.path.isfile(global_name):
+        return global_name
+    raise RuntimeError("Missing '" + subdir + "' " + name)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="source file")
@@ -276,7 +299,7 @@ def main():
     parser.add_argument("-p", "--params", help="additional flags for PcbDraw")
     parser.add_argument("-b", "--board", help=".kicad_pcb file with a board")
     parser.add_argument("-i", "--img_name", help="image name template, should contain exactly one {{}}")
-    parser.add_argument("-t", "--template", help="handlebars template for HTML output")
+    parser.add_argument("-t", "--template", help="handlebars template for HTML output", default='simple')
     parser.add_argument("-f", "--type", help="output type: md or html")
     parser.add_argument("-l", "--libs", help="libraries for PcbDraw")
 
@@ -300,7 +323,7 @@ def main():
         renderer = Renderer(mistune.Renderer)
         outputfile = "index.html"
         try:
-            template = read_template(args["template"])
+            template = read_template(find_data_file(args["template"], '.handlebars', TEMPLATES_SUBDIR))
         except IOError:
             print("Cannot open template file " + args["template"])
             sys.exit(1)
