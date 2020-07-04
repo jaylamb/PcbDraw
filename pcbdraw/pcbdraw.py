@@ -601,8 +601,9 @@ def find_data_file(name, ext, subdir):
     if os.path.isfile(name):
         return name
     # Not a file here, needs extension?
-    if name[-5:] != '.json':
-        name += '.json'
+    ln = len(ext)
+    if name[-ln:] != ext:
+        name += ext
         if os.path.isfile(name):
             return name
     # With the sources?
@@ -613,7 +614,7 @@ def find_data_file(name, ext, subdir):
     global_name = os.path.join(GLOBAL_DATA_DIR, subdir, name)
     if os.path.isfile(global_name):
         return global_name
-    raise RuntimeError("Missing style " + name)
+    raise RuntimeError("Missing '" + subdir + "' " + name)
 
 def load_style(style_file):
     style_file = find_data_file(style_file, '.json', STYLES_SUBDIR)
