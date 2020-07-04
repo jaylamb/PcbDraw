@@ -1,0 +1,18 @@
+Index: PcbDraw.INTI-CMNB/setup.py
+===================================================================
+--- PcbDraw.INTI-CMNB.orig/setup.py
++++ PcbDraw.INTI-CMNB/setup.py
+@@ -1,3 +1,4 @@
++#!/usr/bin/python3
+ # -*- coding: utf-8 -*-
+ 
+ import setuptools
+@@ -30,7 +31,7 @@ setuptools.setup(
+         "wand"
+     ],
+     zip_safe=False,
+-    include_package_data=True,
++    include_package_data=False,
+     entry_points = {
+         "console_scripts": [
+             "pcbdraw=pcbdraw.pcbdraw:main",
