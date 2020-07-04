@@ -193,7 +193,7 @@ def generate_images(content, boardfilename, libs, parameters, name, outdir):
 def generate_image(boardfilename, libs, side, components, active, parameters, outputfile):
     # Use the pcbdraw.py script from the same point this script was executed
     script = os.path.join(os.path.dirname(__file__), "pcbdraw.py")
-    command = [script, "-f", ",".join(components), "-a", ",".join(active)]
+    command = ['python3', script, "-f", ",".join(components), "-a", ",".join(active)]
     if side.startswith("back"):
         command.append("-b")
     command += flatten(map(lambda x: x.split(" ", 1), parameters))
