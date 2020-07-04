@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+import sys
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(here))
 
 import mistune
 import pcbdraw.mdrenderer
@@ -183,17 +188,16 @@ def generate_images(content, boardfilename, libs, parameters, name, outdir):
     return content
 
 def generate_image(boardfilename, libs, side, components, active, parameters, outputfile):
-    svgfilename = os.path.splitext(outputfile)
-    svgfilename, ext = svgfilename[0] + ".svg", svgfilename[1]
-
-    command = ["pcbdraw", "-f", ",".join(components), "-a", ",".join(active)]
+    # Use the pcbdraw.py script from the same point this script was executed
+    script = os.path.join(os.path.dirname(__file__), "pcbdraw.py")
+    command = [script, "-f", ",".join(components), "-a", ",".join(active)]
     if side.startswith("back"):
         command.append("-b")
     command += flatten(map(lambda x: x.split(" ", 1), parameters))
     if libs:
         command.append("--libs=" + libs)
     command.append(boardfilename)
-    command.append(svgfilename)
+    command.append(outputfile)
     try:
         output = subprocess.check_output(command, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
@@ -212,6 +216,8 @@ def relativize_header_paths(header, to):
         if key not in header:
             continue
         if os.path.isabs(header[key]):
+            continue
+        if key == 'libs' and header[key] in ["default", "kicad-default", "eagle-default"]:
             continue
         x = os.path.join(to, header[key])
         header[key] = os.path.normpath(x)
