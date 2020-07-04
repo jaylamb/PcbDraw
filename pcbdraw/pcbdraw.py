@@ -19,6 +19,7 @@ from lxml import etree
 
 GLOBAL_DATA_DIR = '/usr/share/pcbdraw'
 STYLES_SUBDIR = 'styles'
+FOOTPRINTS_SUBDIR = 'footprints'
 
 default_style = {
     "copper": "#417e5a",
@@ -643,12 +644,13 @@ def load_remapping(remap_file):
         raise RuntimeError("Cannot open remapping file " + remap_file)
 
 def adjust_lib_path(path):
-    base = os.path.dirname(__file__)
+    base_local = os.path.join(os.path.dirname(__file__), FOOTPRINTS_SUBDIR)
+    base_global = os.path.join(GLOBAL_DATA_DIR, FOOTPRINTS_SUBDIR)
     if path == "default" or path == "kicad-default":
-        return os.path.join(base, "footprints", "KiCAD-base")
+        return [os.path.join(base_local, "KiCAD-base"), os.path.join(base_global, "KiCAD-base")]
     if path == "eagle-default":
-        return os.path.join(base, "footprints", "Eagle-export")
-    return path
+        return [os.path.join(base_local, "Eagle-export"), os.path.join(base_global, "Eagle-export")]
+    return [path]
 
 def main():
     parser = argparse.ArgumentParser()
@@ -672,7 +674,11 @@ def main():
     parser.add_argument("--warn-back", action="store_true", help="Show warnings about back footprints")
 
     args = parser.parse_args()
-    args.libs = [adjust_lib_path(path) for path in args.libs.split(',')]
+    libs = []
+    for path in args.libs.split(','):
+        libs.extend(adjust_lib_path(path))
+    args.libs = libs
+    print(args.libs)
     args.highlight = args.highlight.split(',') if args.highlight is not None else []
     args.filter = args.filter.split(',') if args.filter is not None else None
 
