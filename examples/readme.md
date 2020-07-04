@@ -27,7 +27,7 @@ pcbdraw -b examples/ArduinoLearningKitStarter/ArduinoLearningKitStarter.kicad_pc
 To use different style:
 
 ```
-pcbdraw --style pcbdraw/styles/oshpark-purple.json examples/ArduinoLearningKitStarter/ArduinoLearningKitStarter.kicad_pcb front.svg
+pcbdraw --style oshpark-purple examples/ArduinoLearningKitStarter/ArduinoLearningKitStarter.kicad_pcb front.svg
 ```
 
 To render only the board without components:
