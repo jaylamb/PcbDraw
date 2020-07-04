@@ -679,7 +679,6 @@ def main():
     for path in args.libs.split(','):
         libs.extend(adjust_lib_path(path))
     args.libs = libs
-    print(args.libs)
     args.highlight = args.highlight.split(',') if args.highlight is not None else []
     args.filter = args.filter.split(',') if args.filter is not None else None
 
