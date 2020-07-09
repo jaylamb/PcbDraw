@@ -617,7 +617,7 @@ def find_data_file(name, ext, subdir):
         if os.path.isfile(name):
             return name
     # With the sources?
-    local_name = os.path.join(os.path.dirname(__file__), subdir, name)
+    local_name = os.path.join(PKG_BASE, subdir, name)
     if os.path.isfile(local_name):
         return local_name
     # System level?
@@ -627,13 +627,11 @@ def find_data_file(name, ext, subdir):
     raise RuntimeError("Missing '" + subdir + "' " + name)
 
 def load_style(style_file):
-<<<<<<< HEAD
-    style_file = find_data_file(style_file, '.json', STYLES_SUBDIR)
-=======
-    STYLES = os.path.join(PKG_BASE, "styles")
     if style_file.startswith("builtin:"):
+        STYLES = os.path.join(PKG_BASE, "styles")
         style_file = os.path.join(STYLES, style_file[len("builtin:"):])
->>>>>>> 2ed547f829e80d7e058738a59bf31b718f69f95a
+    else:
+        style_file = find_data_file(style_file, '.json', STYLES_SUBDIR)
     try:
         with open(style_file, "r") as f:
             style = json.load(f)
@@ -661,6 +659,7 @@ def load_remapping(remap_file):
         raise RuntimeError("Cannot open remapping file " + remap_file)
 
 def adjust_lib_path(path):
+<<<<<<< HEAD
     base_local = os.path.join(os.path.dirname(__file__), FOOTPRINTS_SUBDIR)
     base_global = os.path.join(GLOBAL_DATA_DIR, FOOTPRINTS_SUBDIR)
     if path == "default" or path == "kicad-default":
@@ -668,6 +667,13 @@ def adjust_lib_path(path):
     if path == "eagle-default":
         return [os.path.join(base_local, "Eagle-export"), os.path.join(base_global, "Eagle-export")]
     return [path]
+=======
+    if path == "default" or path == "kicad-default":
+        return os.path.join(PKG_BASE, "footprints", "KiCAD-base")
+    if path == "eagle-default":
+        return os.path.join(PKG_BASE, "footprints", "Eagle-export")
+    return path
+>>>>>>> 241fed5143bcc0fb711a3095556abc758e3d975d
 
 def main():
     parser = argparse.ArgumentParser()
