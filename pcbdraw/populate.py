@@ -218,7 +218,7 @@ def relativize_header_paths(header, to):
     for key in ["template", "board", "libs"]:
         if key not in header:
             continue
-        if os.path.isabs(header[key]):
+        if os.path.isabs(header[key]) or header[key].startswith("builtin:"):
             continue
         if key == 'libs' and header[key] in ["default", "kicad-default", "eagle-default"]:
             continue
@@ -233,7 +233,7 @@ def relativize_header_paths(header, to):
                     continue
                 y = c.split(" ")
                 command, arg = y[0], y[1]
-                if os.path.isabs(arg):
+                if os.path.isabs(arg) or arg.strip().startswith("builtin:"):
                     continue
                 header["params"][i] = command + " " + os.path.normpath(os.path.join(to, arg))
     return header

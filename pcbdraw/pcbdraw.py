@@ -20,6 +20,7 @@ from lxml import etree
 GLOBAL_DATA_DIR = '/usr/share/pcbdraw'
 STYLES_SUBDIR = 'styles'
 FOOTPRINTS_SUBDIR = 'footprints'
+PKG_BASE = os.path.dirname(__file__)
 
 default_style = {
     "copper": "#417e5a",
@@ -626,7 +627,13 @@ def find_data_file(name, ext, subdir):
     raise RuntimeError("Missing '" + subdir + "' " + name)
 
 def load_style(style_file):
+<<<<<<< HEAD
     style_file = find_data_file(style_file, '.json', STYLES_SUBDIR)
+=======
+    STYLES = os.path.join(PKG_BASE, "styles")
+    if style_file.startswith("builtin:"):
+        style_file = os.path.join(STYLES, style_file[len("builtin:"):])
+>>>>>>> 2ed547f829e80d7e058738a59bf31b718f69f95a
     try:
         with open(style_file, "r") as f:
             style = json.load(f)
