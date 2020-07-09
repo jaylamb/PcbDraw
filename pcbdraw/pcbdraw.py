@@ -659,21 +659,13 @@ def load_remapping(remap_file):
         raise RuntimeError("Cannot open remapping file " + remap_file)
 
 def adjust_lib_path(path):
-<<<<<<< HEAD
-    base_local = os.path.join(os.path.dirname(__file__), FOOTPRINTS_SUBDIR)
+    base_local = os.path.join(PKG_BASE, FOOTPRINTS_SUBDIR)
     base_global = os.path.join(GLOBAL_DATA_DIR, FOOTPRINTS_SUBDIR)
     if path == "default" or path == "kicad-default":
         return [os.path.join(base_local, "KiCAD-base"), os.path.join(base_global, "KiCAD-base")]
     if path == "eagle-default":
         return [os.path.join(base_local, "Eagle-export"), os.path.join(base_global, "Eagle-export")]
     return [path]
-=======
-    if path == "default" or path == "kicad-default":
-        return os.path.join(PKG_BASE, "footprints", "KiCAD-base")
-    if path == "eagle-default":
-        return os.path.join(PKG_BASE, "footprints", "Eagle-export")
-    return path
->>>>>>> 241fed5143bcc0fb711a3095556abc758e3d975d
 
 def main():
     parser = argparse.ArgumentParser()
