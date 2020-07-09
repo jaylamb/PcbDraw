@@ -313,7 +313,7 @@ def main():
     try:
         validate_args(args)
     except RuntimeError as e:
-        print(e.message)
+        print(e)
         sys.exit(1)
 
     if args["type"] == "html":
