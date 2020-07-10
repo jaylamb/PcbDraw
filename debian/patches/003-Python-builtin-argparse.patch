@@ -1,0 +1,10 @@
+--- a/setup.py
++++ b/setup.py
+@@ -23,7 +23,6 @@
+         "Operating System :: OS Independent",
+     ],
+     install_requires=[
+-        "argparse",
+         "numpy",
+         "lxml",
+         "mistune",

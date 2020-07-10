@@ -1,1 +1,3 @@
 001-Separated_data_files.patch
+002-PyYAML-not-PrettyYAML.patch
+003-Python-builtin-argparse.patch

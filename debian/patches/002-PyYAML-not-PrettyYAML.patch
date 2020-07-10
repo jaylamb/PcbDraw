@@ -1,0 +1,11 @@
+--- a/setup.py
++++ b/setup.py
+@@ -29,7 +29,7 @@
+         "mistune",
+         "pybars3",
+         "wand",
+-        "pyaml"
++        "pyyaml"
+     ],
+     zip_safe=False,
+     include_package_data=False,
