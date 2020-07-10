@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import sys
 import os
-
-here = os.path.abspath(os.path.dirname(__file__))
-sys.path.insert(0, os.path.dirname(here))
+PKG_BASE = os.path.dirname(__file__)
+# Give more priority to local modules than installed versions
+sys.path.insert(0, os.path.dirname(os.path.abspath(PKG_BASE)))
 
 import mistune
 import pcbdraw.mdrenderer
@@ -12,8 +12,6 @@ import codecs
 import pybars
 import yaml
 import argparse
-import sys
-import os
 import subprocess
 from copy import deepcopy
 
@@ -192,7 +190,7 @@ def generate_images(content, boardfilename, libs, parameters, name, outdir):
 
 def generate_image(boardfilename, libs, side, components, active, parameters, outputfile):
     # Use the pcbdraw.py script from the same point this script was executed
-    script = os.path.join(os.path.dirname(__file__), "pcbdraw.py")
+    script = os.path.join(PKG_BASE, "pcbdraw.py")
     command = ['python3', script, "-f", ",".join(components), "-a", ",".join(active)]
     if side.startswith("back"):
         command.append("-b")
@@ -280,7 +278,7 @@ def find_data_file(name, ext, subdir):
         if os.path.isfile(name):
             return name
     # With the sources?
-    local_name = os.path.join(os.path.dirname(__file__), subdir, name)
+    local_name = os.path.join(PKG_BASE, subdir, name)
     if os.path.isfile(local_name):
         return local_name
     # System level?
