@@ -1,3 +1,9 @@
+pcbdraw (0.5.0-1) testing; urgency=medium
+
+  * New upstream version
+
+ -- Salvador E. Tropea <stropea@inti.gob.ar>  Fri, 10 Jul 2020 08:43:54 -0300
+
 pcbdraw (0.4.0-1) testing; urgency=low
 
   * Initial release.
