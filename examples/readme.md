@@ -6,6 +6,8 @@ The script will download a simple demo board by RoboticsBrno.
 
 # Example usages of PcbDraw
 
+All the examples assumes the current directory is the root of the repository.
+
 To render the board invoke:
 
 ```

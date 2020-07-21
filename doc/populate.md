@@ -9,7 +9,7 @@ highlight newly added components.
 
 ## Installation
 
-This is currently part of PcbDraw, read the PcbDraw installation.
+This is currently part of PcbDraw, read the [PcbDraw](pcbdraw.md) installation.
 
 ## Dependencies
 
@@ -69,7 +69,7 @@ params:
     - --style mystyle.json
     - --remap remapping.json
 img_name: img/populating_{}.png
-template: ../../templates/simple.handlebars
+template: simple
 type: html
 board: ../ArduinoLearningKitStarter/ArduinoLearningKitStarter.kicad_pcb
 libs: ../PcbDraw-Lib/KiCAD-base

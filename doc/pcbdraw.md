@@ -14,11 +14,13 @@ pip install pcbdraw
 ## Dependencies
 
 This script requires the `pcbnew` Python module (should come with KiCAD). All
-the other dependencies (numpy, lxmlm, mistune, wand, pybars3, etc,) are managed automatically.
+the other dependencies (numpy, lxmlm, mistune, wand, pybars3, pyyaml, etc.)
+are managed automatically.
 
 ## No installation
 
-You can run the script without installing, just invoke the `pcbdraw.py`.
+If all the dependencies are available in your system
+you can run the script without installing, just invoke the `pcbdraw.py`.
 As an example, from the root of the git repo you can use:
 
 ```
@@ -32,18 +34,16 @@ Usage of PcbDraw is simple, just run:
 ```.{bash}
 pcbdraw  <input_file> <output_file>
 ```
-- `output_file` is a path to an output SVG file
+- `output_file` is a path to an output SVG, PNG or JPG file
 - `input_file` is a path to an `*.kicad_pcb` file
 
-The script will output several debug messages of KiCAD Python API you can
-ignore. I haven't found a way to disable them. If there is a missing module in
-the libraries, the script will output warning.
+If there is a missing module in the libraries, the script will output warning.
 
 There are several options for the script:
 
 - `--libs <comma separated list>` specifies libraries to use. A library is a
   directory mirroring KiCAD footprint structure -- however, instead of foot
-  print files it contains SVG files. First fit is used. Use can use `default` or
+  print files it contains SVG files. First fit is used. You can use `default` or
   `eagle-default` to use built-in libraries.
 - `--style <JSON_file>` specifies color theme for the board. Default is a green
   board, other styles can be found in the `styles` directories. To specify one
@@ -63,6 +63,22 @@ There are several options for the script:
 - `--mirror` render the board mirrored on the x axis
 - `--highlight` take a comma separated list of components and highlight them
 - `--filter` take a comma separated list of components and show only them
+
+## Path to styles and libraries
+
+The styles and libraries can be installed in various locations. PcbDraw will
+look for them in the following places:
+
+- 1st: the same directory where the script is installed. As an example take
+  a look at the repo layout.
+- 2nd: the user local data directory. The script adds `share/pcbdraw`. As an
+  example, on Linux systems the path for styles will be:
+  `~/.local/share/pcbdraw/styles`
+- 3rd: the system data dyrectory. The script adds `share/pcbdraw`. As an
+  example, on Linux systems the path for styles will be:
+  `/usr/share/pcbdraw/styles`
+
+The exact paths used on your system are displayed by the `--help` option.
 
 ## Writing Custom Styles
 
