@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import setuptools
-
+import versioneer
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="PcbDraw",
-    version="0.5.0",
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Jan Mrázek",
     author_email="email@honzamrazek.cz",
     description="Utility to produce nice looking drawings of KiCAD boards",
@@ -28,6 +29,9 @@ setuptools.setup(
         "pybars3",
         "wand",
         "pyyaml"
+    ],
+    setup_requires=[
+        "versioneer"
     ],
     zip_safe=False,
     include_package_data=True,
