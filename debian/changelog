@@ -1,3 +1,11 @@
+pcbdraw (0.6.0-2) testing; urgency=medium
+
+  * Updated components.
+  * This release also contains a proposed method to compute better a
+    bouding box for the PCB.
+
+ -- Salvador E. Tropea <stropea@inti.gob.ar>Fri, 04 Sep 2020 16:08:13 -0300
+
 pcbdraw (0.6.0-1) testing; urgency=medium
 
   * New upstream release
