@@ -18,6 +18,12 @@ easily specify & maintain nice looking HTML or Markdown population manuals.
 
 ![example](promo_populate.jpg)
 
+## Installation
+
+```bash
+pip install pcbdraw
+```
+
 ## Usage
 
 There are two separate guides:
