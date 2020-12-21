@@ -402,7 +402,7 @@ def get_layers(board, colors, toPlot):
     shutil.rmtree(tmp)
     return container
 
-def get_board_substrate(board, colors, holes, back):
+def get_board_substrate(board, colors, holes, back, silk):
     """
     Plots all front layers from the board and arranges them in a visually appealing style.
     return SVG g element with the board substrate
@@ -414,18 +414,19 @@ def get_board_substrate(board, colors, holes, back):
             ("clad", [pcbnew.B_Mask], process_board_substrate_layer),
             ("copper", [pcbnew.B_Cu], process_board_substrate_layer),
             ("pads", [pcbnew.B_Cu], process_board_substrate_layer),
-            ("pads-mask", [pcbnew.B_Mask], process_board_substrate_mask),
-            ("silk", [pcbnew.B_SilkS], process_board_substrate_layer),
-            ("outline", [pcbnew.Edge_Cuts], process_board_substrate_layer)]
+            ("pads-mask", [pcbnew.B_Mask], process_board_substrate_mask)]
+        if silk:
+            toPlot.append(("silk", [pcbnew.B_SilkS], process_board_substrate_layer))
     else:
         toPlot = [
             ("board", [pcbnew.Edge_Cuts], process_board_substrate_base),
             ("clad", [pcbnew.F_Mask], process_board_substrate_layer),
             ("copper", [pcbnew.F_Cu], process_board_substrate_layer),
             ("pads", [pcbnew.F_Cu], process_board_substrate_layer),
-            ("pads-mask", [pcbnew.F_Mask], process_board_substrate_mask),
-            ("silk", [pcbnew.F_SilkS], process_board_substrate_layer),
-            ("outline", [pcbnew.Edge_Cuts], process_board_substrate_layer)]
+            ("pads-mask", [pcbnew.F_Mask], process_board_substrate_mask)]
+        if silk:
+            toPlot.append(("silk", [pcbnew.F_SilkS], process_board_substrate_layer))
+    toPlot.append(("outline", [pcbnew.Edge_Cuts], process_board_substrate_layer))
     container = etree.Element('g')
     container.attrib["clip-path"] = "url(#cut-off)"
     tmp = tempfile.mkdtemp()
@@ -723,6 +724,7 @@ def main():
     parser.add_argument("-c", "--list-components", action="store_true",
                         help="Dry run, just list the components")
     parser.add_argument("--no-drillholes", action="store_true", help="Do not make holes transparent")
+    parser.add_argument("--no-silk", action="store_true", help="Do not draw the silk layer")
     parser.add_argument("-b","--back", action="store_true", help="render the backside of the board")
     parser.add_argument("--mirror", action="store_true", help="mirror the board")
     parser.add_argument("-a", "--highlight", help="comma separated list of components to highlight")
@@ -825,7 +827,7 @@ def main():
         "padding": style["highlight-padding"]
     }
 
-    board_cont.append(get_board_substrate(board, style, not args.no_drillholes, args.back))
+    board_cont.append(get_board_substrate(board, style, not args.no_drillholes, args.back, not args.no_silk))
     if args.vcuts:
         board_cont.append(get_layers(board, style, [("vcut", [pcbnew.Cmts_User], process_board_substrate_layer)]))
 
