@@ -20,9 +20,8 @@ easily specify & maintain nice looking HTML or Markdown population manuals.
 
 ## Installation
 
-```bash
-pip install pcbdraw
-```
+PcbDraw is a stand-alone CLI tool distributed as a Python package. Read more
+details in the [installation guide](doc/installation.md).
 
 ## Usage
 
